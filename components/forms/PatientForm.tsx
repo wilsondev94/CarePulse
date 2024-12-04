@@ -1,18 +1,16 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { Form } from "@/components/ui/form";
-
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
+
+import { Form } from "@/components/ui/form";
+import { createUser } from "@/lib/actions/patient.action";
+import { userFormValidation } from "@/lib/validation";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import CustomFormField from "../CustomFormField";
-
-const formSchema = z.object({
-  username: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
-  }),
-});
+import SubmitButton from "../ui/SubmitButton";
 
 export enum FormFieldType {
   INPUT = "input",
@@ -25,15 +23,36 @@ export enum FormFieldType {
 }
 
 function PatientForm() {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+
+  const form = useForm<z.infer<typeof userFormValidation>>({
+    resolver: zodResolver(userFormValidation),
     defaultValues: {
-      username: "",
+      name: "",
+      email: "",
+      phone: "",
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+  async function onSubmit({
+    name,
+    email,
+    phone,
+  }: z.infer<typeof userFormValidation>) {
+    setIsLoading(true);
+
+    try {
+      const userData = { name, email, phone };
+      const user = await createUser(userData);
+
+      if (user) {
+        router.push(`/patients/${user.$id}/register`);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+    setIsLoading(false);
   }
 
   return (
@@ -68,7 +87,7 @@ function PatientForm() {
           label="Phone Number"
           placeholder="+234 8176..."
         />
-        <Button type="submit">Submit</Button>
+        <SubmitButton isLoading={isLoading}>Get started</SubmitButton>
       </form>
     </Form>
   );

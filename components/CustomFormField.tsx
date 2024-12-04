@@ -1,20 +1,20 @@
 "use client";
 
+import { E164Number } from "libphonenumber-js/core";
+import Image from "next/image";
+import React from "react";
 import { Control } from "react-hook-form";
+import PhoneInput from "react-phone-number-input";
+import "react-phone-number-input/style.css";
+import { FormFieldType } from "./forms/PatientForm";
 import {
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "./ui/form";
 import { Input } from "./ui/input";
-import { FormFieldType } from "./forms/PatientForm";
-import React from "react";
-import Image from "next/image";
-import "react-phone-number-input/style.css";
-import PhoneInput from "react-phone-number-input";
 
 interface CustomProps {
   control: Control<any>;
@@ -37,9 +37,15 @@ const RenderField = ({ field, props }: { field: any; props: CustomProps }) => {
   switch (fieldType) {
     case FormFieldType.INPUT:
       return (
-        <div className="flex rounded-md border border-dark-50 bg-dark-400">
+        <div className="flex rounded-md border border-dark-500 bg-dark-400">
           {iconSrc && (
-            <Image src={iconSrc} height={24} width={24} alt={iconAlt} />
+            <Image
+              src={iconSrc}
+              height={24}
+              width={24}
+              alt={iconAlt}
+              className="ml-2"
+            />
           )}
           <FormControl>
             <Input placeholder={placeholder} {...field} />
@@ -50,10 +56,10 @@ const RenderField = ({ field, props }: { field: any; props: CustomProps }) => {
       return (
         <FormControl>
           <PhoneInput
-            defaultCountry="US"
+            defaultCountry="NG"
             placeholder={placeholder}
             international
-            withCountrCallingCode
+            withcountrcallingcode="true"
             value={field.value as E164Number | undefined}
             onChange={field.onChange}
             className="input-phone"
