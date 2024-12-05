@@ -1,16 +1,17 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
+// import { useRouter } from "next/navigation";
+// import { useState } from "react";
+// import { useForm } from "react-hook-form";
 
-import { Form } from "@/components/ui/form";
-import { createUser } from "@/lib/actions/patient.action";
-import { userFormValidation } from "@/lib/validation";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import CustomFormField from "../CustomFormField";
-import SubmitButton from "../ui/SubmitButton";
+// import { Form } from "@/components/ui/form";
+// import { createUser } from "@/lib/actions/patient.action";
+// import { userFormValidation } from "@/lib/validation";
+
+// import { zodResolver } from "@hookform/resolvers/zod";
+// import { z } from "zod";
+// import CustomFormField from "../CustomFormField";
+// import SubmitButton from "../ui/SubmitButton";
 
 export enum FormFieldType {
   INPUT = "input",
@@ -19,10 +20,101 @@ export enum FormFieldType {
   CHECKBOX = "chechbox",
   DATE_PICKER = "datepicker",
   SELECT = "select",
-  SKELWTON = "skeleton",
+  SKELETON = "skeleton",
 }
 
-function PatientForm() {
+// function PatientForm() {
+//   const router = useRouter();
+//   const [isLoading, setIsLoading] = useState(false);
+
+//   const form = useForm<z.infer<typeof userFormValidation>>({
+//     resolver: zodResolver(userFormValidation),
+//     defaultValues: {
+//       name: "",
+//       email: "",
+//       phone: "",
+//     },
+//   });
+
+//   const onSubmit = async (values: z.infer<typeof userFormValidation>) => {
+//     const { name, email, phone } = values;
+
+//     setIsLoading(true);
+
+//     try {
+//       const userData = { name, email, phone };
+//       const user = await createUser(userData);
+
+//       if (user) {
+//         router.push(`/patients/${user.$id}/register`);
+//       }
+
+//       return user;
+//     } catch (err) {
+//       console.log(err);
+//     }
+//     setIsLoading(false);
+//   };
+
+//   return (
+//     <Form {...form}>
+//       <form
+//         onSubmit={() => form.handleSubmit(onSubmit)}
+//         className="space-y-6 flex-1"
+//       >
+//         <section className="mb-12 space-y-4">
+//           <h1 className="header">Hi there👋</h1>
+//           <p className="text-dark-700 ">Schedule your first appointment</p>
+//         </section>
+//         <CustomFormField
+//           control={form.control}
+//           fieldType={FormFieldType.INPUT}
+//           name="name"
+//           label="Fulll name"
+//           placeholder="John Doe"
+//           iconSrc="/assets/icons/user.svg"
+//           iconAlt="user"
+//         />
+//         <CustomFormField
+//           control={form.control}
+//           fieldType={FormFieldType.INPUT}
+//           name="email"
+//           label="Email"
+//           placeholder="johndoe@gmail.com"
+//           iconSrc="/assets/icons/email.svg"
+//           iconAlt="email"
+//         />
+//         <CustomFormField
+//           control={form.control}
+//           fieldType={FormFieldType.PHONE_INPUT}
+//           name="phone"
+//           label="Phone Number"
+//           placeholder="+234 8176..."
+//         />
+//         <SubmitButton isLoading={isLoading}>Get started</SubmitButton>
+//       </form>
+//     </Form>
+//   );
+// }
+
+// export default PatientForm;
+
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+
+import { Form } from "@/components/ui/form";
+
+import "react-phone-number-input/style.css";
+
+import SubmitButton from "../ui/SubmitButton";
+import { userFormValidation } from "@/lib/validation";
+import { createUser } from "@/lib/actions/patient.action";
+import CustomFormField from "../CustomFormField";
+
+export const PatientForm = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -35,62 +127,66 @@ function PatientForm() {
     },
   });
 
-  async function onSubmit({
-    name,
-    email,
-    phone,
-  }: z.infer<typeof userFormValidation>) {
+  const onSubmit = async (values: z.infer<typeof userFormValidation>) => {
     setIsLoading(true);
 
     try {
-      const userData = { name, email, phone };
-      const user = await createUser(userData);
+      const user = {
+        name: values.name,
+        email: values.email,
+        phone: values.phone,
+      };
 
-      if (user) {
-        router.push(`/patients/${user.$id}/register`);
+      const newUser = await createUser(user);
+
+      if (newUser) {
+        router.push(`/patient/${newUser.$id}/register`);
       }
-    } catch (err) {
-      console.log(err);
+    } catch (error) {
+      console.log(error);
     }
+
     setIsLoading(false);
-  }
+  };
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 flex-1">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="flex-1 space-y-6">
         <section className="mb-12 space-y-4">
-          <h1 className="header">Hi there👋</h1>
-          <p className="text-dark-700 ">Schedule your first appointment</p>
+          <h1 className="header">Hi there 👋</h1>
+          <p className="text-dark-700">Get started with appointments.</p>
         </section>
+
         <CustomFormField
-          control={form.control}
           fieldType={FormFieldType.INPUT}
+          control={form.control}
           name="name"
-          label="Fulll name"
+          label="Full name"
           placeholder="John Doe"
           iconSrc="/assets/icons/user.svg"
           iconAlt="user"
         />
+
         <CustomFormField
-          control={form.control}
           fieldType={FormFieldType.INPUT}
+          control={form.control}
           name="email"
           label="Email"
           placeholder="johndoe@gmail.com"
           iconSrc="/assets/icons/email.svg"
           iconAlt="email"
         />
+
         <CustomFormField
-          control={form.control}
           fieldType={FormFieldType.PHONE_INPUT}
+          control={form.control}
           name="phone"
-          label="Phone Number"
-          placeholder="+234 8176..."
+          label="Phone number"
+          placeholder="(555) 123-4567"
         />
-        <SubmitButton isLoading={isLoading}>Get started</SubmitButton>
+
+        <SubmitButton isLoading={isLoading}>Get Started</SubmitButton>
       </form>
     </Form>
   );
-}
-
-export default PatientForm;
+};
