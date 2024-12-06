@@ -11,12 +11,9 @@ type FileUploaderProps = {
 };
 
 function FileUploader({ files, onChange }: FileUploaderProps) {
-  const onDrop = useCallback(
-    (acceptedFiles: File[]) => {
-      onChange(acceptedFiles);
-    },
-    [onChange]
-  );
+  const onDrop = useCallback((acceptedFiles: File[]) => {
+    onChange(acceptedFiles);
+  }, []);
 
   const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
@@ -28,7 +25,7 @@ function FileUploader({ files, onChange }: FileUploaderProps) {
           src={convertFileToUrl(files[0])}
           width={1000}
           height={1000}
-          alt="upload image"
+          alt="uploaded image"
           className="max-h-[400px] overflow-hidden object-cover "
         />
       ) : (
