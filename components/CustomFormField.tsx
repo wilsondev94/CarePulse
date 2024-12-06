@@ -58,6 +58,7 @@ const RenderField = ({ field, props }: { field: any; props: CustomProps }) => {
               src={iconSrc}
               height={24}
               width={24}
+              // @ts-expect-error just ignore
               alt={iconAlt}
               className="ml-2"
             />
