@@ -16,6 +16,8 @@ import { InputFile } from "node-appwrite/file";
 
 // CREATE APPWRITE USER
 export const createUser = async (user: CreateUserParams) => {
+  console.log(user);
+
   try {
     // Create new user -> https://appwrite.io/docs/references/1.5.x/server-nodejs/users#create
     const newUser = await users.create(
@@ -50,6 +52,23 @@ export const getUser = async (userId: string) => {
   }
 };
 
+export const getPatient = async (userId: string) => {
+  try {
+    const patients = await databases.listDocuments(
+      DATABASE_ID!,
+      PATIENT_COLLECTION_ID!,
+      [Query.equal("userId", [userId])]
+    );
+
+    return parseStringify(patients.documents[0]);
+  } catch (error) {
+    console.error(
+      "An error occurred while retrieving the patient details:",
+      error
+    );
+  }
+};
+
 ///////////  REGISTER PATIENT  ///////////////
 export const registerPatient = async ({
   identificationDocument,
@@ -65,6 +84,7 @@ export const registerPatient = async ({
       );
 
       file = await storage.createFile(BUCKET_ID!, ID.unique(), inputFile);
+      console.log(file);
 
       if (!file?.$id) {
         throw new Error(

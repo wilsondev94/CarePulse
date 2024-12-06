@@ -25,6 +25,8 @@ import { SelectItem } from "../ui/select";
 import { FormFieldType } from "./PatientForm";
 
 function RegisterForm({ user }: { user: User }) {
+  console.log(user);
+
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -40,8 +42,6 @@ function RegisterForm({ user }: { user: User }) {
 
   const onSubmit = async (values: z.infer<typeof PatientFormValidation>) => {
     setIsLoading(true);
-
-    console.log("clicked", isLoading);
 
     // To save the file info in form data
     let formData;
@@ -66,7 +66,7 @@ function RegisterForm({ user }: { user: User }) {
         identificationDocument: formData,
       };
 
-      // @ts-ignore
+      // @ts-expect-errore eslint unneceaary warning
       const patient = await registerPatient(patientData);
 
       if (patient) {
