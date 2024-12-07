@@ -1,10 +1,15 @@
 import { PatientForm } from "@/components/forms/PatientForm";
+import PasskeyModal from "@/components/passKeyModal";
 import Image from "next/image";
 import Link from "next/link";
 
-export default function Home() {
+export default async function Home({ searchParams }: SearchParamProps) {
+  const searchParam = await searchParams;
+  const isAdmin = searchParam.admin === "true";
+
   return (
     <div className="flex h-screen max-h-screen">
+      {isAdmin && <PasskeyModal />}
       <section className="remove-scrollbar container ">
         <div className="sub-container max-w-[860px] flex-1 flex-col py-10 ">
           <Image
@@ -23,9 +28,6 @@ export default function Home() {
             </p>
             <Link href="/?admin=true" className="text-green-500">
               Admin
-            </Link>
-            <Link href="/patient/4379/register" className="text-white">
-              Rgister
             </Link>
           </div>
         </div>
