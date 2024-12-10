@@ -27,6 +27,7 @@ export default function PasskeyModal() {
   const [open, setOpen] = useState(true);
   const [passkey, setPasskey] = useState("");
   const [otpError, setOtpError] = useState("");
+
   const encryptedKey =
     typeof window !== "undefined"
       ? window.localStorage.getItem("accessKey")
@@ -37,13 +38,14 @@ export default function PasskeyModal() {
 
     if (path) {
       if (accessKey === process.env.NEXT_ADMIN_PASSKEY) {
+        console.log(process.env.NEXT_ADMIN_PASSKEY);
         setOpen(false);
         router.push("/admin");
       } else {
         setOpen(true);
       }
     }
-  }, [encryptedKey, path, router]);
+  }, [encryptedKey]);
 
   const closeModal = () => {
     setOpen(false);
