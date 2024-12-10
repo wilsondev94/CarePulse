@@ -36,7 +36,7 @@ export default function PasskeyModal() {
     const accessKey = encryptedKey && decryptKey(encryptedKey);
 
     if (path) {
-      if (accessKey === process.env.NEXT_PUBLIC_ADMIN_PASSKEY) {
+      if (accessKey === process.env.NEXT_ADMIN_PASSKEY) {
         setOpen(false);
         router.push("/admin");
       } else {
@@ -54,7 +54,7 @@ export default function PasskeyModal() {
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.preventDefault();
-    if (passkey === process.env.NEXT_PUBLIC_ADMIN_PASSKEY) {
+    if (passkey === process.env.NEXT_ADMIN_PASSKEY) {
       const encryptedKey = encryptKey(passkey);
       localStorage.setItem("accessKey", encryptedKey);
 
@@ -113,7 +113,7 @@ export default function PasskeyModal() {
             onClick={(e) => validatePasskey(e)}
             className="shad-primary-btn w-full"
           >
-            Enter Addmin Passkey
+            Enter Admin Passkey
           </AlertDialogCancel>
         </AlertDialogFooter>
       </AlertDialogContent>
