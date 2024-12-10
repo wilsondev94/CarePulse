@@ -24,7 +24,7 @@ import { useEffect, useState } from "react";
 export default function PasskeyModal() {
   const router = useRouter();
   const path = usePathname();
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   const [passkey, setPasskey] = useState("");
   const [otpError, setOtpError] = useState("");
 
@@ -37,15 +37,14 @@ export default function PasskeyModal() {
     const accessKey = encryptedKey && decryptKey(encryptedKey);
 
     if (path) {
-      if (accessKey === process.env.NEXT_ADMIN_PASSKEY) {
-        console.log(process.env.NEXT_ADMIN_PASSKEY);
+      if (accessKey === process.env.NEXT_PUBLIC_ADMIN_PASSKEY) {
         setOpen(false);
         router.push("/admin");
       } else {
         setOpen(true);
       }
     }
-  }, [encryptedKey]);
+  }, [encryptedKey, path, router]);
 
   const closeModal = () => {
     setOpen(false);
@@ -56,7 +55,7 @@ export default function PasskeyModal() {
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.preventDefault();
-    if (passkey === process.env.NEXT_ADMIN_PASSKEY) {
+    if (passkey === process.env.NEXT_PUBLIC_ADMIN_PASSKEY) {
       const encryptedKey = encryptKey(passkey);
       localStorage.setItem("accessKey", encryptedKey);
 
@@ -69,8 +68,7 @@ export default function PasskeyModal() {
   // for the modal: use shadcn alert dialog
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
-      {/* <AlertDialogTrigger>Open</AlertDialogTrigger> */}
-      <AlertDialogContent className="shad-alert-dialog ">
+      <AlertDialogContent className="shad-alert-dialog">
         <AlertDialogHeader>
           <AlertDialogTitle className="flex items-start justify-between">
             Admin Access Verification
@@ -84,7 +82,7 @@ export default function PasskeyModal() {
             />
           </AlertDialogTitle>
           <AlertDialogDescription>
-            To eneter the admin page, please eneter the passkey.
+            To enter the admin page, please eneter the passkey.
           </AlertDialogDescription>
         </AlertDialogHeader>
 
@@ -94,8 +92,8 @@ export default function PasskeyModal() {
             value={passkey}
             onChange={(value) => setPasskey(value)}
           >
-            <InputOTPGroup className="shad-otp">
-              <InputOTPSlot className="shad-otp-slot" index={0} />
+            <InputOTPGroup className="shad-otp ">
+              <InputOTPSlot className="shad-otp-slot " index={0} />
               <InputOTPSlot className="shad-otp-slot" index={1} />
               <InputOTPSlot className="shad-otp-slot" index={2} />
               <InputOTPSlot className="shad-otp-slot" index={3} />
