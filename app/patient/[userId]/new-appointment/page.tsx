@@ -17,13 +17,12 @@ async function NewAppointment({ params }: SearchParamProps) {
             alt="CarePulse "
             className="mb-12 h-10 w-fit"
           />
-
+          {/* @ts-expect-error ignore error */}
           <AppointmentForm
             patientId={patient.$id}
             type="create"
             userId={userId}
           />
-
           <p className="copyright mt-10 py-12">© 2024 CarePulse</p>
         </div>
       </section>

@@ -49,7 +49,9 @@ export const columns: ColumnDef<Appointment>[] = [
       return (
         <div className="flex items-center gap-3">
           <Image
+            // @ts-expect-error ignore error
             src={doctor?.image}
+            // @ts-expect-error ignore error
             alt={doctor?.name}
             height={100}
             width={100}
@@ -71,14 +73,12 @@ export const columns: ColumnDef<Appointment>[] = [
             patientId={original.patient.$id}
             userId={original.patient.userId}
             appointment={original}
-            decription="Please comfirm the following details to schedule"
           />
           <AppointmentModal
             type="cancel"
             patientId={original.patient.$id}
             userId={original.patient.userId}
             appointment={original}
-            decription="Are you sure ypu want to cancel this appointment?"
           />
         </div>
       );

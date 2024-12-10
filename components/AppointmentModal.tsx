@@ -46,6 +46,7 @@ export function AppointmentModal({
         <AppointmentForm
           patientId={patientId}
           userId={userId}
+          // @ts-expect-error ignore error
           appointment={appointment}
           type={type}
           setOpen={setOpen}
