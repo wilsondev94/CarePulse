@@ -5,8 +5,6 @@ import { formatDateTime } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 
-// http://localhost:3000/patient/675207e8001a950fa896/new-appointment/success?appointmentId=6753300600240c03d9b8
-
 async function Success({ params, searchParams }: SearchParamProps) {
   const { userId } = await params;
   const SearchParams = await searchParams;
