@@ -11,8 +11,12 @@ import { Form } from "@/components/ui/form";
 import "react-phone-number-input/style.css";
 
 import { Doctors } from "@/constants";
-import { createAppointment } from "@/lib/actions/appointment.actions";
+import {
+  createAppointment,
+  updateAppointment,
+} from "@/lib/actions/appointment.actions";
 import { getAppointmentSchema } from "@/lib/validation";
+import { Appointment } from "@/types/appwrite.types";
 import Image from "next/image";
 import CustomFormField from "../CustomFormField";
 import { SelectItem } from "../ui/select";
@@ -23,23 +27,31 @@ export function AppointmentForm({
   userId,
   patientId,
   type,
+  appointment,
+  setOpen,
 }: {
   userId: string;
   patientId: string;
+  appointment: Appointment;
+  setOpen: (open: boolean) => void;
   type: "create" | "cancel" | "schedule";
 }) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  console.log("submitting", { type });
 
   const AppointmentFormValidation = getAppointmentSchema(type);
+
   const form = useForm<z.infer<typeof AppointmentFormValidation>>({
     resolver: zodResolver(AppointmentFormValidation),
     defaultValues: {
-      primaryPhysician: "",
-      schedule: new Date(),
-      reason: "",
-      note: "",
-      cancellationReason: "",
+      primaryPhysician: appointment && appointment?.primaryPhysician,
+      schedule: appointment
+        ? new Date(appointment?.schedule)
+        : new Date(Date.now()),
+      reason: appointment ? appointment.reason : "",
+      note: appointment ? appointment?.note : "",
+      cancellationReason: appointment?.cancellationReason || "",
     },
   });
 
@@ -51,10 +63,10 @@ export function AppointmentForm({
     let status;
     switch (type) {
       case "schedule":
-        status = "Scheduled";
+        status = "scheduled";
         break;
       case "cancel":
-        status = "Canclled";
+        status = "cancelled";
         break;
       default:
         status = "pending";
@@ -81,6 +93,25 @@ export function AppointmentForm({
             `/patient/${userId}/new-appointment/success?appointmentId=${appointment.$id}`
           );
         }
+      } else {
+        const appointmentToUpdate = {
+          userId,
+          type,
+          appointmentId: appointment?.$id,
+          appointment: {
+            primaryPhysician: values?.primaryPhysician,
+            schedule: new Date(values?.schedule),
+            status: status as Status,
+            cancellationReason: values?.cancellationReason,
+          },
+        };
+
+        const updatedAppointment = await updateAppointment(appointmentToUpdate);
+
+        if (updatedAppointment) {
+          setOpen(false);
+          form.reset();
+        }
       }
     } catch (error) {
       console.log(error);
@@ -92,12 +123,14 @@ export function AppointmentForm({
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="flex-1 space-y-6">
-        <section className="mb-12 space-y-4">
-          <h1 className="header">New Appointment</h1>
-          <p className="text-dark-700">
-            Request a new appointment in 10 seconds.
-          </p>
-        </section>
+        {type === "create" && (
+          <section className="mb-12 space-y-4">
+            <h1 className="header">New Appointment</h1>
+            <p className="text-dark-700">
+              Request a new appointment in 10 seconds.
+            </p>
+          </section>
+        )}
 
         {type !== "cancel" && (
           <>
@@ -144,7 +177,7 @@ export function AppointmentForm({
               <CustomFormField
                 control={form.control}
                 fieldType={FormFieldType.TEXTAREA}
-                name=""
+                name="note"
                 label="Notes"
                 placeholder="Enter notes"
               />
@@ -168,7 +201,7 @@ export function AppointmentForm({
             type === "cancel" ? "shad-danger-btn" : "shad-primary-btn"
           } w-full`}
         >
-          {(type === "cancel" && "Cancell Appointment") ||
+          {(type === "cancel" && "Cancel Appointment") ||
             (type === "create" && "Create Appointment") ||
             (type === "schedule" && "Schedule Appointment")}
         </SubmitButton>

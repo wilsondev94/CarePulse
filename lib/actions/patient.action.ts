@@ -84,7 +84,6 @@ export const registerPatient = async ({
       );
 
       file = await storage.createFile(BUCKET_ID!, ID.unique(), inputFile);
-      console.log(file);
 
       if (!file?.$id) {
         throw new Error(
