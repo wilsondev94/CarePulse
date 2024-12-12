@@ -83,8 +83,8 @@ export const getRecentAppointmentList = async () => {
 
 export const updateAppointment = async ({
   appointmentId,
-  userId,
   appointment,
+  userId,
   type,
 }: UpdateAppointmentParams) => {
   try {
@@ -99,7 +99,7 @@ export const updateAppointment = async ({
       throw new Error("Appointment not found");
     }
 
-    const smsMessage = `Hi it's CarPulse.
+    const smsMessage = `Hi it's CarePulse.
     ${
       type === "schedule"
         ? `Your appointment has been scheduled for ${
