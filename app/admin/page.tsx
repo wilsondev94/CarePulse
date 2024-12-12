@@ -2,6 +2,7 @@ import StatCard from "@/components/StatCard";
 import { columns } from "@/components/table/Columns";
 import { DataTable } from "@/components/table/DataTable";
 import { getRecentAppointmentList } from "@/lib/actions/appointment.actions";
+import Image from "next/image";
 import Link from "next/link";
 
 async function Admin() {
@@ -15,7 +16,15 @@ async function Admin() {
           href="/"
           className="cursor-pointer flex items-center gap-2 md:items-center sm:items-center sm:gap-1"
         >
-          <span>&larr;</span> <p className="text-16-semibold ">Home</p>
+          <span>
+            <Image
+              src="/assets/icons/home-arrow.svg"
+              height={24}
+              width={24}
+              alt="arrow"
+            />
+          </span>{" "}
+          <p className="text-16-semibold ">Home</p>
         </Link>
       </header>
       <main className="admin-main">

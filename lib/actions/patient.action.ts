@@ -14,12 +14,10 @@ import {
 import { parseStringify } from "../utils";
 import { InputFile } from "node-appwrite/file";
 
-// CREATE APPWRITE USER
 export const createUser = async (user: CreateUserParams) => {
   console.log(user);
 
   try {
-    // Create new user -> https://appwrite.io/docs/references/1.5.x/server-nodejs/users#create
     const newUser = await users.create(
       ID.unique(),
       user.email,
@@ -69,13 +67,11 @@ export const getPatient = async (userId: string) => {
   }
 };
 
-///////////  REGISTER PATIENT  ///////////////
 export const registerPatient = async ({
   identificationDocument,
   ...patient
 }: RegisterUserParams) => {
   try {
-    // Upload file ->  // https://appwrite.io/docs/references/cloud/client-web/storage#createFile
     let file;
     if (identificationDocument) {
       const inputFile = InputFile.fromBuffer(
@@ -92,7 +88,6 @@ export const registerPatient = async ({
       }
     }
 
-    // Create new patient document -> https://appwrite.io/docs/references/cloud/server-nodejs/databases#createDocument
     const newPatient = await databases.createDocument(
       DATABASE_ID!,
       PATIENT_COLLECTION_ID!,
@@ -109,7 +104,6 @@ export const registerPatient = async ({
 
     return parseStringify(newPatient);
   } catch (error) {
-    // REGISTER PATIENT
     console.error("An error occurred while creating a new patient:", error);
   }
 };

@@ -17,7 +17,7 @@ async function NewAppointment({ params }: SearchParamProps) {
             alt="CarePulse "
             className="mb-12 h-10 w-fit"
           />
-          {/* @ts-expect-error ignore error */}
+          {/* @ts-expect-error ignore error  */}
           <AppointmentForm
             patientId={patient.$id}
             type="create"

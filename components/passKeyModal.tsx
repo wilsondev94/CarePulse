@@ -46,11 +46,6 @@ export default function PasskeyModal() {
     }
   }, [encryptedKey, path, router]);
 
-  const closeModal = () => {
-    setOpen(false);
-    router.push("/");
-  };
-
   const validatePasskey = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
@@ -65,7 +60,11 @@ export default function PasskeyModal() {
     }
   };
 
-  // for the modal: use shadcn alert dialog
+  const closeModal = () => {
+    setOpen(false);
+    router.push("/");
+  };
+
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogContent className="shad-alert-dialog">

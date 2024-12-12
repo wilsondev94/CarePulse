@@ -64,7 +64,7 @@ function RegisterForm({ user }: { user: User }) {
         identificationDocument: formData,
       };
 
-      // @ts-expect-errore eslint unneceaary warning
+      // @ts-expect-errore eslint ignore warning
       const patient = await registerPatient(patientData);
 
       if (patient) {
@@ -153,7 +153,6 @@ function RegisterForm({ user }: { user: User }) {
               </FormControl>
             )}
           />
-          {/* //////////////////////////////////// */}
         </div>
 
         <div className="flex flex-col gap-6 xl:flex-row">
