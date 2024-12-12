@@ -128,7 +128,6 @@ function RegisterForm({ user }: { user: User }) {
             label="Date of Birth"
           />
 
-          {/* ///////////////////////////////////// */}
           <CustomFormField
             control={form.control}
             fieldType={FormFieldType.SKELETON}
