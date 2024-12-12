@@ -11,7 +11,10 @@ async function Admin() {
     <div className="mx-auto flex max-w-7xl flex-col space-y-14 ">
       <header className="admin-header">
         <p className="text-16-semibold">Admin Dashboard</p>
-        <Link href="/" className="cursor-pointer flex items-center gap-2">
+        <Link
+          href="/"
+          className="cursor-pointer flex items-center gap-2 md:items-center sm:items-center sm:gap-1"
+        >
           <span>&larr;</span> <p className="text-16-semibold ">Home</p>
         </Link>
       </header>
