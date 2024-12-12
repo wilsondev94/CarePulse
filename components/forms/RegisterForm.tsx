@@ -25,8 +25,6 @@ import { SelectItem } from "../ui/select";
 import { FormFieldType } from "./PatientForm";
 
 function RegisterForm({ user }: { user: User }) {
-  console.log(user);
-
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
