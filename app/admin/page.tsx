@@ -16,7 +16,7 @@ async function Admin() {
           href="/"
           className="cursor-pointer flex items-center gap-2 md:items-center sm:items-center sm:gap-1"
         >
-          <ArrowLeft className="size-4 mr-2" />
+          <ArrowLeft className="size-4 mr-1" />
           <p className="text-16-semibold ">Home</p>
         </Link>
       </header>
